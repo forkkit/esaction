@@ -1,0 +1,16 @@
+{
+  "suites": "./tests/*.js",
+  "coverage": "{./contract.js,./dispatcher.js}",
+  "browser": {
+    "loader": "esm"
+  },
+  "instrumenterOptions": {
+    "esModules": true
+  },
+  "environments": ["chrome", "safari", "firefox"],
+  "configs": {
+    "chrome": {
+      "environments": "chrome"
+    }
+  }
+}

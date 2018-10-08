@@ -1,0 +1,23 @@
+{
+  "name": "esaction",
+  "version": "1.0.0",
+  "author": "Johan Holmerin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:johanholmerin/esaction.git"
+  },
+  "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "^0.7.3",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "intern": "^4.3.1",
+    "rollup": "^0.66.2",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-filesize": "^4.0.1"
+  },
+  "scripts": {
+    "size": "rollup -c",
+    "test": "intern"
+  }
+}
