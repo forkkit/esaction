@@ -90,33 +90,18 @@ function getDispatcher(name) {
 }
 
 /**
- * Element#matches shim
- * @param {HTMLElement} el
- * @param {string} selector
- * @returns {boolean}
- */
-function matches(el, selector) {
-  return (
-    el.matches ||
-    el.webkitMatchesSelector ||
-    el.msMatchesSelector
-  ).call(el, selector);
-}
-
-/**
  * One function used for all event listener callbacks. Makes it possible to add
  * an event listener multiple times to an element without it being called
  * multiple times.
  * @param {Event} event
  */
 function eventListenerCallback(event) {
-  const selector = '[on-' + event.type + ']';
   let actionElement = event.target;
+  let action;
 
-  // Element#closest shim
+  // Find first parent that has matching attribute
   while (
-    !matches(actionElement, selector) &&
-    // Assign and check for existence
+    !(action = getAction(actionElement, event.type)) &&
     (actionElement = actionElement.parentNode)
   ) {}
   if (!actionElement) return;
@@ -136,7 +121,6 @@ function eventListenerCallback(event) {
   });
 
   // Dispatch event
-  const action = getAction(actionElement, event.type);
   const dispatcher = getDispatcher(action);
   if (dispatcher) {
     return dispatcher.call(event.currentTarget, event);
