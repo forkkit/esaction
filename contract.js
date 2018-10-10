@@ -102,7 +102,7 @@ function eventListenerCallback(event) {
   // Find first parent that has matching attribute
   while (
     !(action = getAction(actionElement, event.type)) &&
-    (actionElement = actionElement.parentNode)
+    (actionElement = actionElement.parentElement)
   ) {}
   if (!actionElement) return;
 
