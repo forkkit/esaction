@@ -37,7 +37,7 @@ event handler. Replays events dispatched before handler is added.
 ## Install
 
 ```sh
-yarn add git+https://github.com/johanholmerin/esaction#semver:^1.0.0
+yarn add git+https://github.com/johanholmerin/esaction#semver:^1.0.1
 ```
 
 ## Notes
