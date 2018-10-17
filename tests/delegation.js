@@ -1,19 +1,18 @@
 import { addListeners, removeListeners } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('delegation', () => {
   it('propogates to body', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <button on-click="resolve">Click me</button>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
     button.click();
@@ -23,15 +22,15 @@ describe('delegation', () => {
   });
 
   it('does not propogate past target', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <div on-click="reject">
         <button on-click="noop">Click me</button>
       </div>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, reject } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ noop() {}, reject });
 
     button.click();
@@ -40,18 +39,18 @@ describe('delegation', () => {
   });
 
   it('does not propogate past handler', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <div id="one" on-click="reject">
         <div id="two">
           <button on-click="noop">Click me</button>
         </div>
       </div>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, reject } = createPromise();
 
-    addListeners(document.querySelector('#two'), ['click']);
-    addListeners(document.body, ['click']);
+    addListeners(div.querySelector('#two'), ['click']);
+    addListeners(div, ['click']);
     addHandlers({ noop() {}, reject });
 
     button.click();

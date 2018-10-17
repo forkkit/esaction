@@ -1,18 +1,17 @@
 import { addListeners, removeListeners } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('options', () => {
   it('sets', async () => {
-    const document = createDoc('');
-    const button = document.querySelector('button');
+    const div = createDiv('');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    document.body.addEventListener = (...args) => resolve(args);
-    addListeners(document.body, [{ name: 'click', passive: true, once: true }]);
+    div.addEventListener = (...args) => resolve(args);
+    addListeners(div, [{ name: 'click', passive: true, once: true }]);
 
     const [name, func, options] = await promise;
     const { passive, once, capture } = options;

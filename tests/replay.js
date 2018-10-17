@@ -1,9 +1,8 @@
 import { addListeners, removeListeners, queue } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it, beforeEach } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('replay', () => {
   // Empty queue
@@ -14,13 +13,13 @@ describe('replay', () => {
   });
 
   it('should replay events', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <button on-click="resolve">Click me</button>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     removeHandlers('resolve');
 
     button.click();
@@ -35,13 +34,13 @@ describe('replay', () => {
   });
 
   it('sets context', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <button on-click="onClickHandler">Click me</button>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, resolve, reject } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     removeHandlers('resolve');
 
     button.click();

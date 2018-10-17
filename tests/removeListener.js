@@ -1,9 +1,8 @@
 import { addListeners, removeListeners, queue } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it, beforeEach } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('removeListener', () => {
   // Empty queue
@@ -14,15 +13,15 @@ describe('removeListener', () => {
   });
 
   it('should not call handler', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <button on-click="reject">Click me</button>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, reject } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ reject });
-    removeListeners(document.body, ['click']);
+    removeListeners(div, ['click']);
 
     button.click();
 

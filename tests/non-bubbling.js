@@ -1,18 +1,17 @@
 import { addListeners, removeListeners } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('non-bubbling', () => {
   it('sets capture without options', async () => {
-    const document = createDoc('');
-    const button = document.querySelector('button');
+    const div = createDiv('');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    document.body.addEventListener = (...args) => resolve(args);
-    addListeners(document.body, ['focus']);
+    div.addEventListener = (...args) => resolve(args);
+    addListeners(div, ['focus']);
 
     const [name, func, capture] = await promise;
 
@@ -20,12 +19,12 @@ describe('non-bubbling', () => {
   });
 
   it('sets capture with options', async () => {
-    const document = createDoc('');
-    const button = document.querySelector('button');
+    const div = createDiv('');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    document.body.addEventListener = (...args) => resolve(args);
-    addListeners(document.body, [{ name: 'focus' }]);
+    div.addEventListener = (...args) => resolve(args);
+    addListeners(div, [{ name: 'focus' }]);
 
     const [name, func, options] = await promise;
     const { capture } = options;

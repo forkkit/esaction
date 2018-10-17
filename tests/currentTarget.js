@@ -1,19 +1,18 @@
 import { addListeners, removeListeners } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('currentTarget', () => {
   it('is persisted', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <button on-click="resolve">Click me</button>
     `);
-    const button = document.querySelector('button');
+    const button = div.querySelector('button');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
     button.click();
@@ -25,12 +24,12 @@ describe('currentTarget', () => {
 
   it('sets context', () => {
     new Promise(resolve => {
-      const document = createDoc(`
+      const div = createDiv(`
         <button on-click="onClick">Click me</button>
       `);
-      const button = document.querySelector('button');
+      const button = div.querySelector('button');
 
-      addListeners(document.body, ['click']);
+      addListeners(div, ['click']);
       addHandlers({
         onClick(event) {
           expect(this).to.equal(button);

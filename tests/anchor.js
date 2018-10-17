@@ -1,117 +1,101 @@
 import { addListeners, removeListeners } from '../contract.js';
 import { addHandlers, removeHandlers } from '../dispatcher.js';
-import { createDoc, createPromise, sleep } from './utils.js';
+import { click, createDiv, createPromise, sleep } from './utils.js';
 
-const { describe, it } = intern.getPlugin('interface.bdd');
-const { expect } = intern.getPlugin('chai');
+import { expect } from 'chai';
 
 describe('anchor', () => {
   it('calls preventDefault on normal click', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.click();
+    click(anchor);
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.true;
   });
 
   it('does not call preventDefault on click with ctrlKey', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.dispatchEvent(new MouseEvent('click', {
-      bubbles: true, // is true for real clicks
-      ctrlKey: true
-    }));
+    click(anchor, { ctrlKey: true });
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.false;
   });
 
   it('does not call preventDefault on click with shiftKey', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.dispatchEvent(new MouseEvent('click', {
-      bubbles: true, // is true for real clicks
-      shiftKey: true
-    }));
+    click(anchor, { shiftKey: true });
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.false;
   });
 
   it('does not call preventDefault on click with altKey', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.dispatchEvent(new MouseEvent('click', {
-      bubbles: true, // is true for real clicks
-      altKey: true
-    }));
+    click(anchor, { altKey: true });
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.false;
   });
 
   it('does not call preventDefault on click with metaKey', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.dispatchEvent(new MouseEvent('click', {
-      bubbles: true, // is true for real clicks
-      metaKey: true
-    }));
+    click(anchor, { metaKey: true });
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.false;
   });
 
   it('does not call preventDefault on alternative button click', async () => {
-    const document = createDoc(`
+    const div = createDiv(`
       <a on-click="resolve">Click me</a>
     `);
-    const anchor = document.querySelector('a');
+    const anchor = div.querySelector('a');
     const { promise, resolve } = createPromise();
 
-    addListeners(document.body, ['click']);
+    addListeners(div, ['click']);
     addHandlers({ resolve });
 
-    anchor.dispatchEvent(new MouseEvent('click', {
-      bubbles: true, // is true for real clicks
-      button: 1
-    }));
+    click(anchor, { button: 1 });
     const event = await promise;
 
     expect(event.defaultPrevented).to.be.false;
